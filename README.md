@@ -105,6 +105,6 @@ No terminal ou pela IDE:
 - Amanda Mesquita Cirino da Silva
 - Journey Tiago Lopes Ferreira 
 
-Disciplina: Java Advanced - FIAP  
+Disciplina: Java Advanced
 
 Turma: 2TDSPZ
