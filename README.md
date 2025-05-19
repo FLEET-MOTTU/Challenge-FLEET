@@ -85,11 +85,14 @@ spring:
 
 ---
 
-## 📚 Endpoints Principais
+## 📚 Endpoints Detalhados da API
 
-### 🔧 Moto
+### 🔧 MOTO
 
-- `POST /api/motos` — Cadastrar moto  
+#### 1. Cadastrar Moto
+- **Método:** POST  
+- **Endpoint:** `/api/motos`
+- **Corpo da requisição (JSON):**
 ```json
 {
   "placa": "DEF5678",
@@ -98,19 +101,55 @@ spring:
   "zonaId": 2
 }
 ```
-- `GET /api/motos?status=APTAS&page=0&size=5` — Listar motos por status com paginação  
-- `GET /api/motos/{id}` — Buscar moto por ID  
+- `placa`: Placa da moto (string, única, obrigatória)  
+- `status`: Situação atual da moto (ex: "APTAS", "MANUTENCAO")  
+- `tagBle`: Código da tag Bluetooth fixada na moto  
+- `zonaId`: ID da zona onde a moto deve ser alocada
 
-### 🧭 Zona
+#### 2. Listar Motos por Status (com paginação)
+- **Método:** GET  
+- **Endpoint:** `/api/motos`
+- **Parâmetros obrigatórios:**
+  - `status` (ex: "APTAS")
+  - `page` (ex: 0)
+  - `size` (ex: 5)
+- **Exemplo completo de requisição:**
+```
+GET /api/motos?status=APTAS&page=0&size=5
+```
 
-- `POST /api/zonas` — Cadastrar zona  
+#### 3. Buscar Moto por ID
+- **Método:** GET  
+- **Endpoint:** `/api/motos/{id}`  
+- **Exemplo:** `/api/motos/1`
+
+---
+
+### 🧭 ZONA
+
+#### 4. Cadastrar Zona
+- **Método:** POST  
+- **Endpoint:** `/api/zonas`
+- **Corpo da requisição (JSON):**
 ```json
 {
   "nome": "Zona de Aprovadas",
   "tipo": "APTAS"
 }
 ```
-- `GET /api/zonas?page=0&size=5` — Listar zonas com paginação
+- `nome`: Nome visível da zona (ex: "Zona de Manutenção")  
+- `tipo`: Tipo técnico da zona (ex: "APTAS", "MANUTENCAO")
+
+#### 5. Listar Zonas com Paginação
+- **Método:** GET  
+- **Endpoint:** `/api/zonas`
+- **Parâmetros obrigatórios:**
+  - `page`: número da página (ex: 0)
+  - `size`: quantidade por página (ex: 5)
+- **Exemplo completo de requisição:**
+```
+GET /api/zonas?page=0&size=5
+```
 
 ---
 
