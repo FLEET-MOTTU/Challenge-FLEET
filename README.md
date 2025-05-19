@@ -101,8 +101,10 @@ No terminal ou pela IDE:
 
 ## 👤 Desenvolvido por
 
-Beatriz Ferreira Cruz
-Amanda Mesquita Cirino da Silva
-Journey Tiago Lopes Ferreira 
+- Beatriz Ferreira Cruz
+- Amanda Mesquita Cirino da Silva
+- Journey Tiago Lopes Ferreira 
+
 Disciplina: Java Advanced - FIAP  
+
 Turma: 2TDSPZ
