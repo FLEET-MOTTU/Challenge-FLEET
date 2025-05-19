@@ -90,13 +90,40 @@ spring:
 ### 🔧 Moto
 
 - `POST /api/motos` — Cadastrar moto  
-- `GET /api/motos?status=APTAS` — Listar motos por status  
+```json
+{
+  "placa": "DEF5678",
+  "status": "APTAS",
+  "tagBle": "BLE-0002",
+  "zonaId": 2
+}
+```
+- `GET /api/motos?status=APTAS&page=0&size=5` — Listar motos por status com paginação  
 - `GET /api/motos/{id}` — Buscar moto por ID  
 
 ### 🧭 Zona
 
 - `POST /api/zonas` — Cadastrar zona  
-- `GET /api/zonas` — Listar zonas  
+```json
+{
+  "nome": "Zona de Aprovadas",
+  "tipo": "APTAS"
+}
+```
+- `GET /api/zonas?page=0&size=5` — Listar zonas com paginação
+
+---
+
+## 🔄 Explicando os Parâmetros de Paginação
+
+- `page`: número da página (0 é a primeira)
+- `size`: quantidade de itens por página
+
+🧪 Exemplo:
+```
+GET /api/motos?status=APTAS&page=1&size=5
+```
+→ Retorna a segunda página de motos com status APTAS, com 5 por página.
 
 ---
 
@@ -114,10 +141,9 @@ spring:
 
 ## 👤 Desenvolvido por
 
-- Beatriz Ferreira Cruz
-- Amanda Mesquita Cirino da Silva
-- Journey Tiago Lopes Ferreira 
+- Beatriz Ferreira Cruz  
+- Amanda Mesquita Cirino da Silva  
+- Journey Tiago Lopes Ferreira  
 
-Disciplina: Java Advanced
-
+Disciplina: Java Advanced  
 Turma: 2TDSPZ
