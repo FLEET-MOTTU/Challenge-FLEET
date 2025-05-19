@@ -1,17 +1,34 @@
 # 🛵 FLEET - Sistema de Rastreamento Interno de Motos
 
-Projeto desenvolvido para a disciplina de Java Advanced, com foco em rastreabilidade e controle de motos no pátio da empresa **Mottu**, utilizando Spring Boot, Oracle e Bluetooth Low Energy (BLE).
+Projeto desenvolvido para a disciplina de Java Advanced na FIAP, com o objetivo de rastrear, organizar e gerenciar a movimentação de motos em pátios da empresa Mottu.
 
 ---
 
-## 📌 Objetivo
+## 💡 Visão Geral da Solução
 
-O sistema permite:
-- Cadastro e controle de zonas do pátio.
-- Registro e monitoramento de motos em tempo real.
-- Mapeamento visual por zona.
-- Alocação automática de motos com base em status.
-- Integração com beacons BLE e QR codes para entrada/saída.
+O sistema FLEET foi idealizado para resolver o problema real da empresa Mottu no controle de entrada, alocação e saída de motos de seus pátios. Ele utiliza como conceito base:
+
+- Mapeamento do pátio com zonas delimitadas (ex: Manutenção, Aprovadas, Vistoria).
+- Cadastro e rastreamento de motos com status atual.
+- Alocação automática da moto em uma zona adequada.
+- Utilização de beacons e tags Bluetooth Low Energy (BLE) para rastreamento interno em tempo real.
+- Interface que permite controle visual da localização e status das motos.
+
+---
+
+## ☕ Participação do Java na Solução
+
+A camada Java é responsável por toda a **regra de negócio, persistência e exposição da API REST** que conecta os apps ao banco de dados.
+
+Funções principais implementadas com Java + Spring Boot:
+- Cadastro de motos e zonas (endpoints REST com validação).
+- Consulta de motos por status, com paginação e ordenação.
+- Conversão de entidades para DTOs e vice-versa.
+- Regras para vincular motos a zonas.
+- Tratamento global de erros e validação de dados.
+- Cache de zonas para otimização das consultas.
+
+Toda a estrutura de backend foi feita com Java 17, usando as melhores práticas da arquitetura em camadas.
 
 ---
 
@@ -28,18 +45,18 @@ O sistema permite:
 
 ---
 
-## 🧱 Estrutura do Projeto
+## 📦 Estrutura do Projeto
 
 ```
 src/
-├── controller       # Endpoints REST
-├── dto              # Transferência de dados
-├── exception        # Tratamento de erros global
+├── controller       # Endpoints REST (MotoController, ZonaController)
+├── dto              # Objetos de Transferência de Dados (input/output)
+├── exception        # Tratamento global de erros
 ├── model            # Entidades JPA (Moto, Zona)
-├── repository       # Repositórios JPA
-├── service          # Regras de negócio
+├── repository       # Interfaces JPA (MotoRepository, ZonaRepository)
+├── service          # Regras de negócio (MotoService, ZonaService)
 └── resources/
-    └── application.yml
+    └── application.yml  # Configurações de banco Oracle e cache
 ```
 
 ---
@@ -53,8 +70,6 @@ src/
 - IDE como IntelliJ ou VS Code
 
 ### 2. Configurar o `application.yml`
-Edite o arquivo em `src/main/resources/application.yml`:
-
 ```yaml
 spring:
   datasource:
@@ -64,8 +79,6 @@ spring:
 ```
 
 ### 3. Executar a aplicação
-No terminal ou pela IDE:
-
 ```bash
 ./mvnw spring-boot:run
 ```
