@@ -55,12 +55,12 @@ A camada em Java é responsável por toda a **regra de negócio**, **persistênc
 
 ```
 src/
-├── controller       # Endpoints REST (MotoController, ZonaController)
+├── controller       # Endpoints REST
 ├── dto              # Objetos de Transferência de Dados
 ├── exception        # Tratamento global de erros
-├── model            # Entidades JPA (Moto, Zona)
-├── repository       # Interfaces JPA (MotoRepository, ZonaRepository)
-├── service          # Regras de negócio (MotoService, ZonaService)
+├── model            # Entidades JPA
+├── repository       # Interfaces JPA
+├── service          # Regras de negócio
 └── resources/
     └── application.yml  # Configurações do Oracle e do Cache
 ```
@@ -145,6 +145,41 @@ GET /api/zonas?page=0&size=5
 
 ---
 
+### 🔐 AUTENTICAÇÃO
+
+#### 6. Gerar Link Mágico (Funcionário)
+- **POST** `/auth/magic-link`
+- **Status:** `200 OK`
+- **Descrição:** Gera um link de login único para o funcionário com base no telefone cadastrado.
+- **Corpo:**
+```json
+{
+  "telefone": "11995574552"
+}
+```
+- **Resposta esperada:**
+```
+Link gerado com sucesso: https://fleetapp.com/auth/magic-login?token=abc123
+```
+
+#### 7. Validar Token Mágico
+- **POST** `/auth/validar-token`
+- **Status:** `200 OK`
+- **Descrição:** Valida o token recebido no link mágico e registra o dispositivo.
+- **Corpo:**
+```json
+{
+  "token": "abc123",
+  "dispositivo": "celular-joao.csilva"
+}
+```
+- **Resposta esperada:**
+```
+Token válido e login realizado
+```
+
+---
+
 ## 🔄 Parâmetros de Paginação
 
 - `page`: número da página (0 = primeira)
@@ -168,6 +203,8 @@ GET /api/motos?status=APTAS&page=1&size=5
 - [x] Cache com Spring Cache  
 - [x] Tratamento global de exceções  
 - [x] Conexão com banco Oracle  
+- [x] Geração e validação de login mágico por token  
+- [x] Registro de dispositivo e controle de expiração
 
 ---
 
