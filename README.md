@@ -28,6 +28,7 @@ A camada em Java é responsável por toda a **regra de negócio**, **persistênc
 - Lógica de alocação automática de motos por zona
 - Tratamento global de exceções
 - Cache para otimizar consultas de zonas
+- Cadastro e autenticação de funcionários por link mágico
 
 > Toda a estrutura segue arquitetura em camadas e foi desenvolvida com **Java 17 + Spring Boot 3**.
 
@@ -97,8 +98,6 @@ spring:
 
 #### 1. Cadastrar Moto
 - **POST** `/api/motos`
-- **Status:** `201 Created`
-- **Corpo:**
 ```json
 {
   "placa": "DEF5678",
@@ -109,16 +108,10 @@ spring:
 ```
 
 #### 2. Listar Motos por Status (com paginação)
-- **GET** `/api/motos`
-- **Parâmetros obrigatórios:** `status`, `page`, `size`
-- **Exemplo:**
-```
-GET /api/motos?status=APTAS&page=0&size=5
-```
+- **GET** `/api/motos?status=APTAS&page=0&size=5`
 
 #### 3. Buscar Moto por ID
 - **GET** `/api/motos/{id}`
-- **Exemplo:** `/api/motos/1`
 
 ---
 
@@ -126,8 +119,6 @@ GET /api/motos?status=APTAS&page=0&size=5
 
 #### 4. Cadastrar Zona
 - **POST** `/api/zonas`
-- **Status:** `201 Created`
-- **Corpo:**
 ```json
 {
   "nome": "Zona de Aprovadas",
@@ -136,46 +127,41 @@ GET /api/motos?status=APTAS&page=0&size=5
 ```
 
 #### 5. Listar Zonas com Paginação
-- **GET** `/api/zonas`
-- **Parâmetros obrigatórios:** `page`, `size`
-- **Exemplo:**
-```
-GET /api/zonas?page=0&size=5
+- **GET** `/api/zonas?page=0&size=5`
+
+---
+
+### 👷 FUNCIONÁRIOS
+
+#### 6. Cadastrar Funcionário
+- **POST** `/funcionarios`
+```json
+{
+  "nome": "Maria Oliveira",
+  "telefone": "11988887777",
+  "cargo": "Reboque"
+}
 ```
 
 ---
 
-### 🔐 AUTENTICAÇÃO
+### 🔐 AUTENTICAÇÃO POR LINK MÁGICO
 
-#### 6. Gerar Link Mágico (Funcionário)
+#### 7. Gerar Link Mágico
 - **POST** `/auth/magic-link`
-- **Status:** `200 OK`
-- **Descrição:** Gera um link de login único para o funcionário com base no telefone cadastrado.
-- **Corpo:**
 ```json
 {
   "telefone": "11995574552"
 }
 ```
-- **Resposta esperada:**
-```
-Link gerado com sucesso: https://fleetapp.com/auth/magic-login?token=abc123
-```
 
-#### 7. Validar Token Mágico
+#### 8. Validar Token Mágico
 - **POST** `/auth/validar-token`
-- **Status:** `200 OK`
-- **Descrição:** Valida o token recebido no link mágico e registra o dispositivo.
-- **Corpo:**
 ```json
 {
   "token": "abc123",
   "dispositivo": "celular-joao.csilva"
 }
-```
-- **Resposta esperada:**
-```
-Token válido e login realizado
 ```
 
 ---
@@ -185,11 +171,10 @@ Token válido e login realizado
 - `page`: número da página (0 = primeira)
 - `size`: quantidade de itens por página
 
-🧪 Exemplo:
+Exemplo:
 ```
 GET /api/motos?status=APTAS&page=1&size=5
 ```
-→ Retorna a **segunda página** de motos com status "APTAS", com 5 itens por página.
 
 ---
 
@@ -203,8 +188,10 @@ GET /api/motos?status=APTAS&page=1&size=5
 - [x] Cache com Spring Cache  
 - [x] Tratamento global de exceções  
 - [x] Conexão com banco Oracle  
-- [x] Geração e validação de login mágico por token  
-- [x] Registro de dispositivo e controle de expiração
+- [x] Cadastro de funcionário via API  
+- [x] Geração de link mágico com token expira em 24h  
+- [x] Validação de token com uso único  
+- [x] Registro de dispositivo no login  
 
 ---
 
