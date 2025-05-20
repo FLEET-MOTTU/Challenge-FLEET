@@ -197,8 +197,8 @@ GET /api/motos?status=APTAS&page=1&size=5
 
 ## 👤 Desenvolvedores
 
-- **Beatriz Ferreira Cruz**  
-- **Amanda Mesquita Cirino da Silva**  
+- **Amanda Mesquita Cirino da Silva**
+- **Beatriz Ferreira Cruz**    
 - **Journey Tiago Lopes Ferreira**
 
 **Disciplina:** Java Advanced  
