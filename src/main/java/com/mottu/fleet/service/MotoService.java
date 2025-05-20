@@ -6,6 +6,7 @@ import com.mottu.fleet.model.Moto;
 import com.mottu.fleet.model.Zona;
 import com.mottu.fleet.repository.MotoRepository;
 import com.mottu.fleet.repository.ZonaRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class MotoService {
         return toDTO(moto);
     }
 
+    @Cacheable("motosPorStatus")
     public Page<MotoDTO> listarPorStatus(String status, Pageable pageable) {
         return motoRepository.findByStatus(status, pageable).map(this::toDTO);
     }

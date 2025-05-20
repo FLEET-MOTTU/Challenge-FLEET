@@ -23,11 +23,11 @@ A camada em Java é responsável por toda a **regra de negócio**, **persistênc
 
 ### Principais funcionalidades:
 - CRUD de motos e zonas, com validação de dados
-- Filtros por status e paginação nas consultas
+- Filtros por status, paginação e ordenação nas consultas
 - Conversão entre entidades e DTOs
 - Lógica de alocação automática de motos por zona
 - Tratamento global de exceções
-- Cache para otimizar consultas de zonas
+- Cache aplicado na listagem de motos por status com `@Cacheable`
 - Cadastro e autenticação de funcionários por link mágico
 
 > Toda a estrutura segue arquitetura em camadas e foi desenvolvida com **Java 17 + Spring Boot 3**.
@@ -185,7 +185,7 @@ GET /api/motos?status=APTAS&page=1&size=5
 - [x] Relacionamento entre entidades  
 - [x] Paginação com filtros  
 - [x] Uso de DTOs  
-- [x] Cache com Spring Cache  
+- [x] Cache com Spring Cache (ativo na listagem de motos por status) 
 - [x] Tratamento global de exceções  
 - [x] Conexão com banco Oracle  
 - [x] Cadastro de funcionário via API  
