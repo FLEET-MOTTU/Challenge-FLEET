@@ -22,32 +22,26 @@ O sistema **FLEET** foi idealizado para resolver um problema real da empresa Mot
 A camada em Java é responsável por toda a **regra de negócio**, **persistência de dados** e **exposição da API REST** que conecta os aplicativos ao banco Oracle.
 
 ### Principais funcionalidades:
-- CRUD de motos e zonas, com validação de dados
-- Filtros por status, paginação e ordenação nas consultas
-- Conversão entre entidades e DTOs
-- Lógica de alocação automática de motos por zona
-- Tratamento global de exceções
-- Cache aplicado na listagem de motos por status com `@Cacheable`
-- Cadastro e autenticação de funcionários por link mágico
-
-> Toda a estrutura segue arquitetura em camadas e foi desenvolvida com **Java 17 + Spring Boot 3**.
+- CRUD de motos, zonas e funcionários com validações
+- Login por credenciais e link mágico (administradores e operadores)
+- Upload e consulta de imagem de mapa (ZERADO / COM_ZONAS)
+- Filtros, paginação e ordenação nos endpoints
+- Integração com outra API para sincronização de zonas
+- Uso de DTOs, tratamento global de erros e boas práticas REST
+- Cache com Spring Cache
+- Gerador automático de código de funcionário
 
 ---
 
 ## 🚀 Tecnologias Utilizadas
 
-### Backend
 - Java 17  
 - Spring Boot 3  
 - Spring Web  
 - Spring Data JPA  
 - Spring Cache  
-- Bean Validation
-
-### Banco de Dados
-- Oracle Database
-
-### Build
+- Bean Validation  
+- Oracle Database  
 - Maven
 
 ---
@@ -63,7 +57,7 @@ src/
 ├── repository       # Interfaces JPA
 ├── service          # Regras de negócio
 └── resources/
-    └── application.properties  # Configurações do Oracle e do Cache
+    └── application.properties  # Configurações do Oracle, cache e pastas
 ```
 
 ---
@@ -106,8 +100,7 @@ upload.mapa.diretorio=src/main/resources/static/images
 
 ### 🔧 MOTOS
 
-#### 1. Cadastrar Moto
-- **POST** `/api/motos`
+- **POST** `/api/motos`  
 ```json
 {
   "placa": "DEF5678",
@@ -117,18 +110,14 @@ upload.mapa.diretorio=src/main/resources/static/images
 }
 ```
 
-#### 2. Listar Motos por Status (com paginação)
-- **GET** `/api/motos?status=APTAS&page=0&size=5`
-
-#### 3. Buscar Moto por ID
+- **GET** `/api/motos?status=APTAS&page=0&size=5`  
 - **GET** `/api/motos/{id}`
 
 ---
 
 ### 🧭 ZONAS
 
-#### 4. Cadastrar Zona
-- **POST** `/api/zonas`
+- **POST** `/api/zonas`  
 ```json
 {
   "id": 1,
@@ -137,50 +126,44 @@ upload.mapa.diretorio=src/main/resources/static/images
 }
 ```
 
-#### 5. Listar Zonas com Paginação
-- **GET** `/api/zonas?page=0&size=5`
-
-#### 6. Buscar Zona por ID
+- **GET** `/api/zonas?page=0&size=5`  
 - **GET** `/api/zonas/{id}`
 
 ---
 
 ### 👷 FUNCIONÁRIOS
 
-#### 7. Cadastrar Funcionário
-- **POST** `/funcionarios`
+- **POST** `/funcionarios`  
 ```json
 {
   "nome": "Maria Oliveira",
   "telefone": "11988887777",
   "cargo": "Reboque",
-  "adm": false
+  "adm": false,
+  "login": "maria",
+  "senha": "senha123"
 }
 ```
 
-#### 8. Buscar Funcionário por ID
-- **GET** `/funcionarios/{id}`
-
-#### 9. Atualizar Funcionário
-- **PUT** `/funcionarios/{id}`
-
-#### 10. Deletar Funcionário
+- **GET** `/funcionarios`  
+- **GET** `/funcionarios/{id}`  
+- **PUT** `/funcionarios/{id}`  
 - **DELETE** `/funcionarios/{id}`
 
 ---
 
-### 🔐 AUTENTICAÇÃO POR LINK MÁGICO
+### 🔐 AUTENTICAÇÃO
 
-#### 11. Gerar Link Mágico
-- **POST** `/auth/magic-link`
+#### Link Mágico (Funcionários)
+
+- **POST** `/auth/magic-link`  
 ```json
 {
   "telefone": "11995574552"
 }
 ```
 
-#### 12. Validar Token Mágico
-- **POST** `/auth/validar-token`
+- **POST** `/auth/validar-token`  
 ```json
 {
   "token": "abc123",
@@ -188,18 +171,27 @@ upload.mapa.diretorio=src/main/resources/static/images
 }
 ```
 
+#### Login por Credenciais (ADM ou Funcionário)
+
+- **POST** `/auth/login`  
+```json
+{
+  "login": "ADM-PATIO-ZL",
+  "senha": "123456"
+}
+```
+
 ---
 
 ### 🗺️ MAPA
 
-#### 13. Upload de Imagem de Mapa
-- **POST** `/mapa/upload`
-  - **form-data**:
-    - `file`: arquivo PNG ou JPG
+- **POST** `/mapa/upload`  
+  - `form-data`:
+    - `file`: arquivo `.png` ou `.jpg`
     - `tipo`: `ZERADO` ou `COM_ZONAS`
 
-#### 14. Buscar Mapa Mais Recente por Tipo
-- **GET** `/mapa/recente/{tipo}`
+- **GET** `/mapa/recente/ZERADO`  
+- **GET** `/mapa/recente/COM_ZONAS`
 
 ---
 
@@ -218,19 +210,20 @@ GET /api/motos?status=APTAS&page=1&size=5
 ## ✅ Requisitos Atendidos
 
 - [x] CRUD completo de funcionário com código mockado
-- [x] Requisito de ID na criação de zona + GET por ID
-- [x] Seeder populando banco com dados via Service
-- [x] Geração de código mockado ao registrar funcionário
-- [x] Envio de zona para outra API Java com RestTemplate
-- [x] Upload e atualização de imagem do mapa (ZERADO e COM_ZONAS)
-- [x] Upload controlado, com diretório configurável e nomes únicos
-- [x] Retorno da URL da imagem mais recente via endpoint
+- [x] Login via senha (adm) e via token mágico (funcionário)
+- [x] ID obrigatório na criação de zona + busca por ID
+- [x] Seeder inicial com motos, zonas e funcionários
+- [x] Upload e listagem de imagens do mapa
+- [x] Endpoint de sincronização com API externa
+- [x] Cache ativo com `@Cacheable`
+- [x] Upload com caminho configurável e nomes únicos
+- [x] Arquitetura em camadas com uso de DTOs e validações
 
 ---
 
 ## 👤 Desenvolvedores
 
-- **Amanda Mesquita Cirino da Silva**
+- **Amanda Mesquita Cirino da Silva**  
 - **Beatriz Ferreira Cruz**    
 - **Journey Tiago Lopes Ferreira**
 
