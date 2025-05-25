@@ -16,6 +16,17 @@ public class Zona {
     @NotBlank
     private String tipo;
 
+    // Construtor vazio (obrigatório para o JPA)
+    public Zona() {
+    }
+
+    // Construtor com parâmetros (usado no DataSeeder)
+    public Zona(Long id, String nome, String tipo) {
+        this.id = id;
+        this.nome = nome;
+        this.tipo = tipo;
+    }
+
     public Long getId() {
         return id;
     }

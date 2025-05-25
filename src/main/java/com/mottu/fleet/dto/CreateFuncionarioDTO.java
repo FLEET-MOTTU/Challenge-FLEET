@@ -13,6 +13,8 @@ public class CreateFuncionarioDTO {
     @NotBlank(message = "Cargo é obrigatório")
     private String cargo;
 
+    private boolean isAdm; // Novo campo
+
     public String getNome() {
         return nome;
     }
@@ -35,5 +37,13 @@ public class CreateFuncionarioDTO {
 
     public void setCargo(String cargo) {
         this.cargo = cargo;
+    }
+
+    public boolean isAdm() {
+        return isAdm;
+    }
+
+    public void setAdm(boolean isAdm) {
+        this.isAdm = isAdm;
     }
 }
