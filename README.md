@@ -63,7 +63,7 @@ src/
 ├── repository       # Interfaces JPA
 ├── service          # Regras de negócio
 └── resources/
-    └── application.yml  # Configurações do Oracle e do Cache
+    └── application.properties  # Configurações do Oracle e do Cache
 ```
 
 ---
@@ -76,13 +76,23 @@ src/
 - Oracle Database
 - IDE (IntelliJ, VS Code ou Eclipse)
 
-### 2. Configurar o `application.yml`
-```yaml
-spring:
-  datasource:
-    url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL
-    username: SEU_USUARIO
-    password: SUA_SENHA
+### 2. Configurar o `application.properties`
+```properties
+spring.application.name=fleet
+server.port=8080
+
+spring.datasource.url=jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL
+spring.datasource.username=SEU_USUARIO
+spring.datasource.password=SUA_SENHA
+spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
+
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.database-platform=org.hibernate.dialect.OracleDialect
+spring.jpa.show-sql=true
+
+spring.cache.type=simple
+integracao.zona.url=http://localhost:8081/api/zonas/sincronizar
+upload.mapa.diretorio=src/main/resources/static/images
 ```
 
 ### 3. Executar a aplicação
@@ -121,6 +131,7 @@ spring:
 - **POST** `/api/zonas`
 ```json
 {
+  "id": 1,
   "nome": "Zona de Aprovadas",
   "tipo": "APTAS"
 }
@@ -129,25 +140,38 @@ spring:
 #### 5. Listar Zonas com Paginação
 - **GET** `/api/zonas?page=0&size=5`
 
+#### 6. Buscar Zona por ID
+- **GET** `/api/zonas/{id}`
+
 ---
 
 ### 👷 FUNCIONÁRIOS
 
-#### 6. Cadastrar Funcionário
+#### 7. Cadastrar Funcionário
 - **POST** `/funcionarios`
 ```json
 {
   "nome": "Maria Oliveira",
   "telefone": "11988887777",
-  "cargo": "Reboque"
+  "cargo": "Reboque",
+  "adm": false
 }
 ```
+
+#### 8. Buscar Funcionário por ID
+- **GET** `/funcionarios/{id}`
+
+#### 9. Atualizar Funcionário
+- **PUT** `/funcionarios/{id}`
+
+#### 10. Deletar Funcionário
+- **DELETE** `/funcionarios/{id}`
 
 ---
 
 ### 🔐 AUTENTICAÇÃO POR LINK MÁGICO
 
-#### 7. Gerar Link Mágico
+#### 11. Gerar Link Mágico
 - **POST** `/auth/magic-link`
 ```json
 {
@@ -155,7 +179,7 @@ spring:
 }
 ```
 
-#### 8. Validar Token Mágico
+#### 12. Validar Token Mágico
 - **POST** `/auth/validar-token`
 ```json
 {
@@ -163,6 +187,19 @@ spring:
   "dispositivo": "celular-joao.csilva"
 }
 ```
+
+---
+
+### 🗺️ MAPA
+
+#### 13. Upload de Imagem de Mapa
+- **POST** `/mapa/upload`
+  - **form-data**:
+    - `file`: arquivo PNG ou JPG
+    - `tipo`: `ZERADO` ou `COM_ZONAS`
+
+#### 14. Buscar Mapa Mais Recente por Tipo
+- **GET** `/mapa/recente/{tipo}`
 
 ---
 
@@ -180,25 +217,21 @@ GET /api/motos?status=APTAS&page=1&size=5
 
 ## ✅ Requisitos Atendidos
 
-- [x] Cadastro e consulta de motos e zonas  
-- [x] Validações com Bean Validation  
-- [x] Relacionamento entre entidades  
-- [x] Paginação com filtros  
-- [x] Uso de DTOs  
-- [x] Cache com Spring Cache (ativo na listagem de motos por status) 
-- [x] Tratamento global de exceções  
-- [x] Conexão com banco Oracle  
-- [x] Cadastro de funcionário via API  
-- [x] Geração de link mágico com token expira em 24h  
-- [x] Validação de token com uso único  
-- [x] Registro de dispositivo no login  
+- [x] CRUD completo de funcionário com código mockado
+- [x] Requisito de ID na criação de zona + GET por ID
+- [x] Seeder populando banco com dados via Service
+- [x] Geração de código mockado ao registrar funcionário
+- [x] Envio de zona para outra API Java com RestTemplate
+- [x] Upload e atualização de imagem do mapa (ZERADO e COM_ZONAS)
+- [x] Upload controlado, com diretório configurável e nomes únicos
+- [x] Retorno da URL da imagem mais recente via endpoint
 
 ---
 
 ## 👤 Desenvolvedores
 
-- **Beatriz Ferreira Cruz**  
-- **Amanda Mesquita Cirino da Silva**  
+- **Amanda Mesquita Cirino da Silva**
+- **Beatriz Ferreira Cruz**    
 - **Journey Tiago Lopes Ferreira**
 
 **Disciplina:** Java Advanced  

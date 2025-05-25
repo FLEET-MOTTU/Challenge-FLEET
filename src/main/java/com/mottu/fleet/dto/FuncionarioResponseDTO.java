@@ -1,30 +1,18 @@
-package com.mottu.fleet.model;
+package com.mottu.fleet.dto;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-public class Funcionario {
+public class FuncionarioResponseDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-
-    private String codigo; // Código Mockado: FUNC-XXXXX
+    private String codigo;
     private String nome;
     private String telefone;
     private String cargo;
+    private String status;
     private boolean isAdm;
-
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
     private LocalDateTime ultimoLogin;
-
-    public enum Status {
-        ATIVO, SUSPENSO, REMOVIDO
-    }
 
     public UUID getId() {
         return id;
@@ -66,20 +54,20 @@ public class Funcionario {
         this.cargo = cargo;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public boolean isAdm() {
         return isAdm;
     }
 
-    public void setIsAdm(boolean isAdm) {
+    public void setAdm(boolean isAdm) {
         this.isAdm = isAdm;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     public LocalDateTime getUltimoLogin() {
